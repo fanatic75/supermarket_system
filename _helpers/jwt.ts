@@ -20,7 +20,7 @@ function jwt() {
 const isRevoked:IsRevokedCallback = async  (req , payload, done)=>   {
     
     const [employee] = await employeeService.getById(payload.sub);
-    console.log(employee);
+    
     // revoke token if user no longer exists
     if (!employee) {
         return done(null, true);

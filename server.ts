@@ -8,6 +8,7 @@ import jwt from './_helpers/jwt';
 import errorHandler from './_helpers/error-handler';
 import employeeController from './employees/employee.controller';
 import branchesController from './Branches/branches.controller';
+import productsController from './Products/products.controller';
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -26,8 +27,8 @@ app.use('/employees', employeeController);
 
  app.use('/branches',branchesController);
 
+ app.use('/products',productsController);
 /*
-app.use('/products',require('./products/product.controller'));
 
 app.use('/suppliers',require('./suppliers/supplier.controller'));
 

@@ -5,7 +5,7 @@
         "password": "senorita1231"
     },
     "secretToken": "THIS IS USED TO SIGN AND VERIFY JWT TOKENS, REPLACE IT WITH YOUR OWN SECRET, IT CAN BE ANY STRING",
-    "secretTokenLife": "3h",
+    "secretTokenLife": "100d",
     "secretRefreshToken": "THIS IS USED TO , REPLACE IT WITH YOUR OWN SECRET, IT CAN BE ANY STRING SIGN AND VERIFY JWT TOKENS",
     "secretRefreshTokenLife": "1d",
     "secretPasswordHash": 10
