@@ -8,6 +8,7 @@ import jwt from './_helpers/jwt';
 import errorHandler from './_helpers/error-handler';
 import employeeController from './employees/employee.controller';
 import branchesController from './Branches/branches.controller';
+import customerController from './Customers/customers.contoller';
 import productsController from './Products/products.controller';
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -27,13 +28,13 @@ app.use('/employees', employeeController);
 
  app.use('/branches',branchesController);
 
+ app.use('/customers',customerController);
  app.use('/products',productsController);
 /*
 
 app.use('/suppliers',require('./suppliers/supplier.controller'));
 
-
-app.use('/customers',require('./customers/customer.controller')); */
+ */
 // global error handler
 app.use(errorHandler as any);
 
