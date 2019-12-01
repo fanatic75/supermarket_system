@@ -65,7 +65,7 @@ async function getAll(): Promise<[Products]> {
         }
         const hasCopies = { branchId : productParam.branchId,productId:productParam.productId,noOfCopies:productParam.noOfCopies};
         const {branchId, noOfCopies , ...restOfProductParam } = productParam;
-        const result = await insertQuery('insert into products set ?',restOfProductParam);
+         await insertQuery('insert into products set ?',restOfProductParam);
         
         return await insertQuery ('insert into hasCopies set?',hasCopies);
         
