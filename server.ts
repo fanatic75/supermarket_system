@@ -10,6 +10,7 @@ import employeeController from './employees/employee.controller';
 import branchesController from './Branches/branches.controller';
 import customerController from './Customers/customers.contoller';
 import productsController from './Products/products.controller';
+import suppliersController from './Supplier/supplier.controller';
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -30,9 +31,10 @@ app.use('/employees', employeeController);
 
  app.use('/customers',customerController);
  app.use('/products',productsController);
+ 
+app.use('/suppliers',suppliersController);
 /*
 
-app.use('/suppliers',require('./suppliers/supplier.controller'));
 
  */
 // global error handler
