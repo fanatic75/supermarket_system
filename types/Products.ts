@@ -1,7 +1,7 @@
 
 export default class Products {
     constructor(
-        public productId: number,
+        public productId: string,
         public productName: string,
         public productionDate:Date,
         public company:string,

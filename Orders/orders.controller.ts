@@ -4,7 +4,7 @@ export interface RequestUser extends Request {
     user: string
 }
 const router = express.Router();
-import supplierService from "./supplier.service"
+import ordersService from "./orders.service"
 import isAdmin from '../employees/admin.service';
 
 
@@ -13,8 +13,8 @@ const register = (req: RequestUser, res: Response, next: any) => {
     isAdmin(req.user && req.user)
         .then((result) => {
             if (result) {
-                supplierService.create(req.body)
-                .then(Suppliers => Suppliers ? res.json({ message: 'Supplier created' }) : res.json({message:"Supplier could not be created"}).status(404))
+                ordersService.create(req.body)
+                .then(Orders => Orders ? res.json({ message: 'Order created' }) : res.json({message:"Order could not be created"}).status(404))
                 .catch(err => next(err));
             
             }else {
@@ -30,8 +30,23 @@ const  getAll = (req:RequestUser, res:Response, next:any)=> {
     isAdmin(req.user)
         .then((result) => {
             if (result) {
-                supplierService.getAll()
-                .then(Suppliers => Suppliers ? res.json(Suppliers) : res.sendStatus(404))
+                ordersService.getAll()
+                .then(Orders => Orders ? res.json(Orders) : res.sendStatus(404))
+                    .catch(err => next(err));
+            } else {
+                throw "Not an Admin"
+            }
+        })
+        .catch(err => next(err));
+}
+
+const  getAllProductsOfAnOrder = (req:RequestUser, res:Response, next:any)=> {
+
+    isAdmin(req.user)
+        .then((result) => {
+            if (result) {
+                ordersService.getAllProductsOfAnOrder(req.params.id)
+                .then(products => products ? res.json(products) : res.sendStatus(404))
                     .catch(err => next(err));
             } else {
                 throw "Not an Admin"
@@ -45,8 +60,8 @@ const  getById = (req:RequestUser, res:Response, next:any)=> {
     isAdmin(req.user)
         .then((result) => {
             if (result) {
-                supplierService.getById(req.params.id)
-                .then(Suppliers => Suppliers ? res.json(Suppliers) : res.sendStatus(404))
+                ordersService.getById(req.params.id)
+                .then(Orders => Orders ? res.json(Orders) : res.sendStatus(404))
                     .catch(err => next(err));
             } else {
                 throw "Not an Admin"
@@ -55,25 +70,6 @@ const  getById = (req:RequestUser, res:Response, next:any)=> {
         .catch(err => next(err));
 }
 
-const update = (req: RequestUser, res: Response, next: any) => {
-    isAdmin(req.user)
-        .then((result) => {
-            if (result) {
-                supplierService.update(req.params.id, req.body)
-                    .then(Suppliers => Suppliers ? res.json(Suppliers) : res.sendStatus(404))
-                    .catch(err => next(err));
-            } else {
-
-                throw 'Not an Admin';
-
-            }
-
-        })
-        .catch(err => next(err));
-
-        
-
-}
 
 
 
@@ -83,8 +79,8 @@ const _delete = (req: RequestUser, res: Response, next: any) => {
     isAdmin(req.user && req.user)
         .then((result) => {
             if (result) {
-                supplierService.delete(req.params.id)
-                    .then(() => res.json({ message: "Supplier Deleted" }))
+                ordersService.delete(req.params.id)
+                    .then(() => res.json({ message: "Order Deleted" }))
                     .catch(err => next(err));
             }
             else{
@@ -98,11 +94,8 @@ const _delete = (req: RequestUser, res: Response, next: any) => {
 
 //@ts-ignore
 router.post('/register',register);
-
-
-
 //@ts-ignore
-router.put('/:id',update);
+router.get('/:id/products',getAllProductsOfAnOrder);
 
 //@ts-ignore
 router.delete('/:id', _delete);

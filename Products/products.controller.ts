@@ -40,6 +40,23 @@ const  getAll = (req:RequestUser, res:Response, next:any)=> {
         .catch(err => next(err));
 }
 
+const  getAllProductsOfABranch = (req:RequestUser, res:Response, next:any)=> {
+
+    isAdmin(req.user)
+        .then((result) => {
+            if (result) {
+                productsService.getAllProductsOfABranch(req.params.id)
+                .then(products => products ? res.json(products) : res.sendStatus(404))
+                    .catch(err => next(err));
+            } else {
+                throw "Not an Admin"
+            }
+        })
+        .catch(err => next(err));
+}
+
+
+
 const  getById = (req:RequestUser, res:Response, next:any)=> {
 
     isAdmin(req.user)
@@ -55,6 +72,28 @@ const  getById = (req:RequestUser, res:Response, next:any)=> {
         .catch(err => next(err));
 }
 
+
+
+
+const updateQuantityOfBranch = (req: RequestUser, res: Response, next: any) => {
+    isAdmin(req.user)
+        .then((result) => {
+            if (result) {
+                productsService.updateQuantityOfBranch(req.params.id, req.body)
+                    .then(products => products ? res.json({message: "Product Quantity Updated"}) : res.sendStatus(404))
+                    .catch(err => next(err));
+            } else {
+
+                throw 'Not an Admin';
+
+            }
+
+        })
+        .catch(err => next(err));
+
+        
+
+}
 
 const update = (req: RequestUser, res: Response, next: any) => {
     isAdmin(req.user)
@@ -101,11 +140,22 @@ router.post('/register',register);
 //@ts-ignore
 router.put('/:id', update);
 
+
+//@ts-ignore
+router.put('/:id/quantity', updateQuantityOfBranch);
+
+
+
 //@ts-ignore
 router.delete('/:id', _delete);
 
 //@ts-ignore
 router.get('/', getAll);
+
+
+//@ts-ignore
+router.get('/:id/branch', getAllProductsOfABranch);
+
 
 //@ts-ignore
 router.get('/:id', getById);
