@@ -1,6 +1,7 @@
 import Products from '../types/Products';
-import executeQuery, { insertQuery } from "../_helpers/db.js";
+import executeQuery, { insertQuery, multipleQueries } from "../_helpers/db.js";
 import { uuidv4 } from '../Orders/orders.service';
+const mySql= require('mysql2/promise');
 
 async function getAll(): Promise<[Products]> {
     const [[rows]]: [[[Products]]] = await executeQuery('call getAllProducts()');
@@ -80,14 +81,21 @@ async function getAll(): Promise<[Products]> {
   
   }
 
-  async function updateQuantityOfBranch(id : string, productParam : any){
-    if(!productParam.noOfCopies&&!productParam.branchId){
-      throw 'No Of Copies and Branch Id is required';
+  async function updateQuantityOfBranch(id : string, productParam : {products:[{productId:string,noOfCopies:number}]}){
+    if(productParam.products.length < 1){
+      throw 'Product Array is required';
     }
-      const [result] = await insertQuery('update hasCopies set noOfCopies = ? where productId = ? and branchId = ?',[productParam.noOfCopies, productParam.productId, id]);
-      if(result.affectedRows)
-        return true;
-      return;
+    let queries = '';
+    productParam.products.map((product)=>{
+      queries += mySql.format('update hasCopies set noOfCopies = ? where productId = ? and branchId = ? ;',[product.noOfCopies,product.productId,id])
+    });
+
+    const [[result]] = await multipleQueries(queries);
+  
+    if(result.affectedRows)
+      return true;
+    return;
+      
   }
 
   async function update(id:string, productParam:Products){

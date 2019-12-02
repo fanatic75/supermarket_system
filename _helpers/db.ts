@@ -24,7 +24,8 @@ export async function insertQuery(query:string,values?:object|[string|number]){
             host:connection.host,
             user:connection.user,
             password:connection.password,
-            database:'supermarket'
+            database:'supermarket',
+            multipleStatements:true,
         });
         return await con.query(query,values&&values);
     }   catch(e){
@@ -32,3 +33,20 @@ export async function insertQuery(query:string,values?:object|[string|number]){
     }
   
 }   
+
+ 
+export async function multipleQueries(queries:string){
+    try{
+        const con = await mySql.createConnection({
+            host:connection.host,
+            user:connection.user,
+            password:connection.password,
+            database:'supermarket',
+            multipleStatements:true,
+        });
+        return await con.query(queries);
+    }   catch(e){
+        console.log(e);
+    }
+  
+} 

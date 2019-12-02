@@ -42,17 +42,11 @@ const  getAll = (req:RequestUser, res:Response, next:any)=> {
 
 const  getAllProductsOfABranch = (req:RequestUser, res:Response, next:any)=> {
 
-    isAdmin(req.user)
-        .then((result) => {
-            if (result) {
+    
                 productsService.getAllProductsOfABranch(req.params.id)
                 .then(products => products ? res.json(products) : res.sendStatus(404))
                     .catch(err => next(err));
-            } else {
-                throw "Not an Admin"
-            }
-        })
-        .catch(err => next(err));
+          
 }
 
 
@@ -76,20 +70,13 @@ const  getById = (req:RequestUser, res:Response, next:any)=> {
 
 
 const updateQuantityOfBranch = (req: RequestUser, res: Response, next: any) => {
-    isAdmin(req.user)
-        .then((result) => {
-            if (result) {
-                productsService.updateQuantityOfBranch(req.params.id, req.body)
+    
+    productsService.updateQuantityOfBranch(req.params.id, req.body)
                     .then(products => products ? res.json({message: "Product Quantity Updated"}) : res.sendStatus(404))
                     .catch(err => next(err));
-            } else {
+            
 
-                throw 'Not an Admin';
-
-            }
-
-        })
-        .catch(err => next(err));
+      
 
         
 
