@@ -10,18 +10,11 @@ import isAdmin from '../employees/admin.service';
 
 
 const register = (req: RequestUser, res: Response, next: any) => {
-    isAdmin(req.user && req.user)
-        .then((result) => {
-            if (result) {
+ 
                 customerService.create(req.body)
-                .then(Customers => Customers ? res.json({ message: 'Customer created' }) : res.json({message:"Customer could not be created"}).status(404))
+                .then(Customers => Customers ? res.json(Customers) : res.json({message:"Customer could not be created"}).status(404))
                 .catch(err => next(err));
-            
-            }else {
-                throw "Not an Admin"
-            }
-        })
-        .catch(err => next(err)); 
+          
 
 }
 

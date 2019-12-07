@@ -10,18 +10,12 @@ import isAdmin from '../employees/admin.service';
 
 
 const register = (req: RequestUser, res: Response, next: any) => {
-    isAdmin(req.user && req.user)
-        .then((result) => {
-            if (result) {
+  
                 ordersService.create(req.body)
                 .then(Orders => Orders ? res.json({ message: 'Order created' }) : res.json({message:"Order could not be created"}).status(404))
                 .catch(err => next(err));
             
-            }else {
-                throw "Not an Admin"
-            }
-        })
-        .catch(err => next(err)); 
+          
 
 }
 
@@ -39,6 +33,21 @@ const  getAll = (req:RequestUser, res:Response, next:any)=> {
         })
         .catch(err => next(err));
 }
+
+
+const getAllOrdersWithCustomerInfo = (req:RequestUser,res:Response,next:any)=>{
+    isAdmin(req.user)
+    .then((result) => {
+        if (result) {
+            ordersService.getAllOrdersWithCustomerInfo()
+            .then(orders => orders ? res.json(orders) : res.sendStatus(404))
+                .catch(err => next(err));
+        } else {
+            throw "Not an Admin"
+        }
+    })
+    .catch(err => next(err));
+}   
 
 const  getAllProductsOfAnOrder = (req:RequestUser, res:Response, next:any)=> {
 
@@ -102,6 +111,11 @@ router.delete('/:id', _delete);
 
 //@ts-ignore
 router.get('/', getAll);
+
+
+//@ts-ignore
+
+router.get('/all',getAllOrdersWithCustomerInfo);
 
 //@ts-ignore
 router.get('/:id', getById);

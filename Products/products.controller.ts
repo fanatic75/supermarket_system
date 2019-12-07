@@ -40,6 +40,23 @@ const  getAll = (req:RequestUser, res:Response, next:any)=> {
         .catch(err => next(err));
 }
 
+
+const  getAllProductsCopies = (req:RequestUser, res:Response, next:any)=> {
+
+    isAdmin(req.user)
+        .then((result) => {
+            if (result) {
+                productsService.getAllProductsCopies()
+                .then(products => products ? res.json(products) : res.sendStatus(404))
+                    .catch(err => next(err));
+            } else {
+                throw "Not an Admin"
+            }
+        })
+        .catch(err => next(err));
+}
+
+
 const  getAllProductsOfABranch = (req:RequestUser, res:Response, next:any)=> {
 
     
@@ -126,7 +143,8 @@ router.post('/register',register);
 
 //@ts-ignore
 router.put('/:id', update);
-
+//@ts-ignore
+router.get('/all', getAllProductsCopies);
 
 //@ts-ignore
 router.put('/:id/quantity', updateQuantityOfBranch);

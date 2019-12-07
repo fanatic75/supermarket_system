@@ -11,6 +11,14 @@ async function getAll(): Promise<[Products]> {
     }
     throw 'No Products Found';
   }
+  async function getAllProductsCopies(): Promise<[Products]> {
+    const [[rows]]: [[[Products]]] = await executeQuery('call getAllProductsCopies()');
+    
+    if (rows.length) {
+      return rows;
+    }
+    throw 'No Products Found';
+  }
 
   async function getAllProductsOfABranch(id: string): Promise<any> {
     const [rows]: [[any]] = await executeQuery('select productId, noOfCopies  from hasCopies where branchId = ?', [id]);
@@ -28,7 +36,7 @@ async function getAll(): Promise<[Products]> {
       }));
     
     }
-    throw 'No Branches Found';
+    throw 'No Products Found';
   }
 
 
@@ -41,7 +49,7 @@ async function getAll(): Promise<[Products]> {
     if (rows.length) {
       return rows;
     }
-    throw 'No Branches Found';
+    throw 'No Products Found';
   }
   
 
@@ -85,7 +93,8 @@ async function getAll(): Promise<[Products]> {
     if(productParam.products.length < 1){
       throw 'Product Array is required';
     }
-    let queries = '';
+    console.log(productParam);
+        let queries = '';
     productParam.products.map((product)=>{
       queries += mySql.format('update hasCopies set noOfCopies = ? where productId = ? and branchId = ? ;',[product.noOfCopies,product.productId,id])
     });
@@ -163,6 +172,7 @@ async function getAll(): Promise<[Products]> {
         updateQuantityOfBranch,
         getAllProductsOfABranch,
         create,
+        getAllProductsCopies,
         getAll,
         getById,
         update,

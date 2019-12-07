@@ -11,6 +11,14 @@ async function getAll(): Promise<[Orders]> {
     throw 'No Orders Found';
 }
 
+async function getAllOrdersWithCustomerInfo(): Promise<[Orders]> {
+    const [[rows]]: [[[Orders]]] = await executeQuery('call getAllOrdersCustomers();');
+
+    if (rows.length) {
+        return rows;
+    }
+    throw 'No Orders Found';
+}
 
 async function getAllProductsOfAnOrder(id:string): Promise<[Orders]>{
    if(id){
@@ -90,6 +98,7 @@ async function _delete(id: string) {
 
 export default {
     getAllProductsOfAnOrder,
+    getAllOrdersWithCustomerInfo,
     create,
     getAll,
     getById,
